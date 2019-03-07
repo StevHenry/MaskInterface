@@ -1,0 +1,9 @@
+.tab {
+    -fx-background-image: url("/images/light_gray_abstract_1.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+}
+
+.homeText {
+
+}
