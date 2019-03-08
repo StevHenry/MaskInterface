@@ -8,11 +8,12 @@ import java.text.SimpleDateFormat;
 public class TimeCalculator {
 
     private long start, end;
+    private boolean run = true;
     private final Thread timeCalculatorThread;
 
     public TimeCalculator(){
         timeCalculatorThread = new Thread(() -> {
-            while(true) {
+            while(run) {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) { e.printStackTrace(); }
@@ -28,12 +29,12 @@ public class TimeCalculator {
 
     public void stop(){
         end = System.currentTimeMillis();
-        timeCalculatorThread.stop();
+        run = false;
     }
 
     public long getCurrentPassedTime(){
         long passed = end - start;
-        return passed > 0 ? passed : 1;
+        return passed > 0 ? passed : 1l;
     }
 
     public Thread startProcess(Text timeLabel, Thread calculationThread){
@@ -41,7 +42,8 @@ public class TimeCalculator {
             calculationThread.start();
             while (calculationThread.isAlive()) {
                 Platform.runLater(() -> {
-                    timeLabel.setText(new SimpleDateFormat("mm:ss:SSS").format(getCurrentPassedTime()));
+                    String time = new SimpleDateFormat("mm:ss:SSS").format(getCurrentPassedTime());
+                    timeLabel.setText(time);
                 });
                 try {
                     Thread.sleep(1);

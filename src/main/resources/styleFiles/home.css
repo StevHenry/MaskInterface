@@ -1,0 +1,30 @@
+.tab {
+    -fx-background-image: url("/images/light_gray_abstract_1.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+
+    -fx-hgap: 50;
+    -fx-vgap: 50;
+    -fx-alignment: center;
+
+    -fx-max-width: 1010px;;
+
+}
+
+#homeText {
+    -fx-font-size: 25;
+    -fx-fill: black;
+    -fx-font-weight: bold;
+    -fx-font-family: "Roboto Slab";
+
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-padding: 25 25 25 25;
+
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+
+    -fx-pref-width: 400px;
+}

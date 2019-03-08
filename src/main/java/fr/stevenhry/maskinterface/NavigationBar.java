@@ -18,6 +18,6 @@ public class NavigationBar extends TilePane {
             getChildren().add(button);
         });
 
-        this.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource("navBar.css").toExternalForm());
+        this.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource("styleFiles/navBar.css").toExternalForm());
     }
 }

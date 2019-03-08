@@ -19,7 +19,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     //MASK
-    implementation 'com.github.Askigh:Mask:1.0.3'
+    implementation 'com.github.Askigh:Mask:1.0.4'
 
     //LOGGER
     compile 'org.slf4j:slf4j-api:1.8.0-beta2'

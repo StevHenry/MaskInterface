@@ -27,7 +27,7 @@ public class ImagesCalculatorTab extends GridMaskTab {
     private TextField[] unknownsValues;
 
     public ImagesCalculatorTab(String tabName) {
-        super(tabName, "imagesGridTab.css");
+        super(tabName, "styleFiles/imagesGridTab.css");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ImagesCalculatorTab extends GridMaskTab {
                 refurbish();
 
                 char[] unknowns = exp.getVariables();
-                if(!checkUnknowsCount(exp)){ return; }
+                if(!hasGoodAvailableUnknownsCount(exp)){ return; }
                 activateEntries(unknowns);
             }
         });
@@ -63,6 +63,7 @@ public class ImagesCalculatorTab extends GridMaskTab {
             LOGGER.debug("Entered function: \"" + function.getText() + "\"");
 
             actionButton.setDisable(true);
+            timeCalculator = new TimeCalculator();
 
             if(checkEntries(function, exp)){
                 String[] values = new String[exp.getVariablesAmount()];
@@ -73,8 +74,8 @@ public class ImagesCalculatorTab extends GridMaskTab {
                     values[i] = unknownsValues[i].getText();
                 }
 
+
                 Thread calculationThread = new Thread(() -> {
-                    timeCalculator = new TimeCalculator();
                     timeCalculator.start();
                     try {
                         float myResult = MaskOperator.begin().imageFor(exp, MaskExpression.TEMP, true, values).asFloat();
@@ -82,9 +83,8 @@ public class ImagesCalculatorTab extends GridMaskTab {
                             result.setText(String.valueOf(myResult));
                         });
                     } catch (Exception exception) {
-                        Platform.runLater(() -> { result.setText("..."); });
-                        showErrorLabel("Unable to calculate image!", exception, 1,
-                                2 + unknownFieldsLines * 2 + spaces, fieldsPerLine - 2, 1);
+                        resetResultField();
+                        errorByTab("Unable to calculate image!", exception);
                     }
                     timeCalculator.stop();
                 });
@@ -92,6 +92,7 @@ public class ImagesCalculatorTab extends GridMaskTab {
                 complete(calculationThread, "Calculating image...");
             }
         });
+
         this.addRow(0, typeLabel);
         this.add(function, 1, 0, fieldsPerLine - 3, 1);
         this.add(update, fieldsPerLine - 2, 0);
@@ -128,11 +129,11 @@ public class ImagesCalculatorTab extends GridMaskTab {
         if (function.getText() == null || function.getText().replace(" ", "").equals("")
                 || exp == null) {
             refurbish();
-            customError("You must define an expression before trying to calculate an image !",
+            errorByTab("You must define an expression before trying to calculate an image !",
                     new IllegalArgumentException("Function is not defined"));
             return false;
         } else {
-            if(!checkUnknowsCount(exp)){ return false; }
+            if(hasGoodAvailableUnknownsCount(exp)){ return false; }
 
             try { exp.reload(function.getText()); } catch (MaskException e) { return false;}
 
@@ -143,9 +144,8 @@ public class ImagesCalculatorTab extends GridMaskTab {
             for (TextField field : unknownsValues) {
                 if (!field.isDisabled() && field.getText() != null && !field.getText().replace(" ", "").equals("")) {
                     if (!field.getText().matches("[\\d.]+")) {
-                        Platform.runLater(() -> {result.setText("...");});
-                        timeCalculator.stop();
-                        customError("Please insert numbers only !", new IllegalArgumentException("Bad argument format detected"));
+                        resetResultField();
+                        errorByTab("Please insert numbers only !", new IllegalArgumentException("Bad argument format detected"));
                         return false;
                     }
                 }
@@ -156,46 +156,43 @@ public class ImagesCalculatorTab extends GridMaskTab {
                     for (char c : exp.getVariables()) {
                         if (!positionedUnknowns.contains(c)) {
                             pleaseFillEach();
-                            timeCalculator.stop();
                             return false;
                         }
                     }
                     return true;
                 } else {
                     pleaseFillEach();
-                    timeCalculator.stop();
                 }
             } else {
-                Platform.runLater(() -> { result.setText("..."); });
-                timeCalculator.stop();
-                customError("You must click update button before trying to calculate!\n"
+                resetResultField();
+                errorByTab("You must click update button before trying to calculate!\n"
                         + "\t\tAutomatically updated !", new IllegalArgumentException());
             }
         }
         return false;
     }
 
-    private void customError(String customMessage, Exception e){
-        showErrorLabel(customMessage, e, 1, spaces + 2 + unknownFieldsLines * 2, fieldsPerLine - 2, 1);
+    @Override
+    protected void errorByTab(String customMessage, Exception exception){
+        showErrorLabel(customMessage, exception, 1, spaces + 2 + unknownFieldsLines * 2, fieldsPerLine - 2, 1);
     }
 
     /**
-     * @return whether it can show or not
+     * @return whether the MaskExpression unknowns outnumbers the max settable unknowns count or not
      */
-    private boolean checkUnknowsCount(MaskExpression exp){
+    private boolean hasGoodAvailableUnknownsCount(MaskExpression exp){
         if(exp.getVariablesAmount() > fieldsPerLine*unknownFieldsLines){
-            timeCalculator.stop();
             showErrorLabel("You can't define a function with more than " +
                             (fieldsPerLine * unknownFieldsLines) + " unknowns in your function!",
                     new IllegalArgumentException("Too much unknowns"), 1, spaces + 2 + unknownFieldsLines * 2,
                     fieldsPerLine - 2, 1);
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private void pleaseFillEach() {
-        Platform.runLater(() -> {result.setText("...");});
+        resetResultField();
         showErrorLabel("You must fill each unknown value!",
                 new NullPointerException("Ungettable value(s) field(s)"), 1, spaces + 1 + unknownFieldsLines * 2,
                 fieldsPerLine - 2, 1);

@@ -15,7 +15,7 @@ public class ExpandTab extends GridMaskTab {
     private final static Logger LOGGER = LoggerFactory.getLogger(ExpandTab.class);
 
     public ExpandTab(String tabName) {
-        super(tabName, "gridTabStyle.css");
+        super(tabName, "styleFiles/gridTabStyle.css");
     }
 
     @Override
@@ -29,17 +29,15 @@ public class ExpandTab extends GridMaskTab {
             LOGGER.debug("Entered text for calculation: \"" + calculation.getText() + "\"");
 
             actionButton.setDisable(true);
+            timeCalculator = new TimeCalculator();
 
             Thread calculationThread = new Thread(() -> {
-                timeCalculator = new TimeCalculator();
                 timeCalculator.start();
                 try {
                     if (calculation.getText() == null || calculation.getText().replace(" ", "").equals("")) {
-                        Platform.runLater(() -> {
-                            result.setText("...");
-                        });
-                        showErrorLabel("You must define an expression before trying to develop!",
-                                new NullPointerException("Expression is not defined"), 1, 2);
+                        resetResultField();
+                        errorByTab("You must define an expression before trying to develop!",
+                                new NullPointerException("Expression is not defined"));
                     } else {
                         String calculatedReduction = ReducerFactory.reduce(calculation.getText());
                         Platform.runLater(() -> {
@@ -47,10 +45,8 @@ public class ExpandTab extends GridMaskTab {
                         });
                     }
                 } catch (Exception exception) {
-                    Platform.runLater(() -> {
-                        result.setText("...");
-                    });
-                    showErrorLabel("Unable to reduce expression !", exception, 1, 2);
+                    resetResultField();
+                    errorByTab("Unable to reduce expression !", exception);
                 }
                 timeCalculator.stop();
             });
@@ -60,6 +56,11 @@ public class ExpandTab extends GridMaskTab {
 
         this.addRow(0, typeLabel, calculation, actionButton);
         this.addRow(1, resultLabel, result, timeLabel);
+    }
+
+    @Override
+    protected void errorByTab(String customMessage, Exception exception) {
+        showErrorLabel(customMessage, exception, 1, 2);
     }
 
     @Override

@@ -40,16 +40,13 @@ public abstract class GridMaskTab extends GridPane implements MaskFunctionTab {
 
     protected abstract Logger getLogger();
 
-    @Override
-    public String getTabName() {
-        return tabName.toUpperCase();
-    }
+    protected abstract void errorByTab(String customMessage, Exception exception);
 
-    protected void showErrorLabel(String customMessage, Exception exception, int column, int row) {
+    protected final void showErrorLabel(String customMessage, Exception exception, int column, int row) {
         showErrorLabel(customMessage, exception, column, row, 1, 1);
     }
 
-    protected void showErrorLabel(String customMessage, Exception exception, int column, int row, int columnSpan, int rowSpan) {
+    protected final void showErrorLabel(String customMessage, Exception exception, int column, int row, int columnSpan, int rowSpan) {
         getLogger().error(customMessage + " (Error: " + exception.getMessage() + ")");
         Platform.runLater(() -> {
             errorLabel.setText("Error:\t" + customMessage + (exception.getMessage() != null ?  "\n\t\t(Exception message: " + exception.getMessage() + ")" : ""));
@@ -60,17 +57,25 @@ public abstract class GridMaskTab extends GridPane implements MaskFunctionTab {
         });
     }
 
-    protected void refurbishThenComplete(Thread calculationThread, String message){
+    @Override
+    public String getTabName() {
+        return tabName.toUpperCase();
+    }
+
+    protected final void resetResultField(){
+        Platform.runLater(() -> {result.setText("...");});
+    }
+
+    protected final void refurbishThenComplete(Thread calculationThread, String message){
         refurbish();
         complete(calculationThread, message);
     }
 
-    protected void complete(Thread calculationThread, String message){
+    protected final void complete(Thread calculationThread, String message){
         Thread labelUpdater = timeCalculator.startProcess(timeLabel, calculationThread);
         Platform.runLater(() -> {
             result.setText(message);
         });
-
 
         new Thread(() -> {
             while (labelUpdater.isAlive()) {

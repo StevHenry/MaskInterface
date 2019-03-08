@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -18,7 +17,7 @@ public class EquationSolverTab extends GridMaskTab {
     private final static Logger LOGGER = LoggerFactory.getLogger(EquationSolverTab.class);
 
     public EquationSolverTab(String tabName) {
-        super(tabName, "gridTabStyle.css");
+        super(tabName, "styleFiles/gridTabStyle.css");
     }
 
     @Override
@@ -33,30 +32,27 @@ public class EquationSolverTab extends GridMaskTab {
             LOGGER.debug("Entered expressions to solve: \"" + expressions.getText().replace("\n", " | ") + "\"");
 
             actionButton.setDisable(true);
+            timeCalculator = new TimeCalculator();
 
             Thread calculationThread = new Thread(() -> {
-                timeCalculator = new TimeCalculator();
                 timeCalculator.start();
                 try {
                     if (expressions.getText() == null || expressions.getText().replace(" ", "").equals("")) {
-                        Platform.runLater(() -> {
-                            result.setText("...");
-                        });
-                        showErrorLabel("You must define your expression(s) before trying to solve!",
-                                new NullPointerException("Expression(s) not defined"), 1, 2);
+                        resetResultField();
+                        errorByTab("You must define your expression(s) before trying to solve!",
+                                new NullPointerException("Expression(s) not defined"));
                     } else {
                         Map<Character, String> solvedValues = EquationSolver.solve(EquationSolver.build(
                                 expressions.getText().replace(";", "\n").split("\n")));
                         Platform.runLater(() -> {
-                            result.setText(String.join("\n", solvedValues.entrySet().stream()
-                                    .map(entry -> entry.getKey() + "=" + entry.getValue()).collect(Collectors.toList())));
+                            String calculatedValues = String.join("\n", solvedValues.entrySet().stream()
+                                    .map(entry -> entry.getKey() + "=" + entry.getValue()).collect(Collectors.toList()));
+                            result.setText(calculatedValues);
                         });
                     }
                 } catch (Exception exception) {
-                    Platform.runLater(() -> {
-                        result.setText("...");
-                    });
-                    showErrorLabel("Unable to solve expressions !", exception, 1, 2);
+                    resetResultField();
+                    errorByTab("Unable to solve expressions !", exception);
                 }
                 timeCalculator.stop();
             });
@@ -67,6 +63,11 @@ public class EquationSolverTab extends GridMaskTab {
         this.addRow(0, typeLabel, expressions, actionButton);
         this.addRow(1, resultLabel, result, timeLabel);
 
+    }
+
+    @Override
+    protected void errorByTab(String customMessage, Exception exception) {
+        showErrorLabel(customMessage, exception, 1, 2);
     }
 
     @Override
