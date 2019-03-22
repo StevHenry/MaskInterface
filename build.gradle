@@ -1,17 +1,18 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "4.0.4"
     id "java"
+    id "idea"
 }
 
 group 'fr.stevenhry.maskinterface'
-version '1.0'
+version '1.1'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    maven { url "https://jitpack.io"}
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -19,7 +20,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     //MASK
-    implementation 'com.github.Askigh:Mask:1.0.4'
+    implementation 'com.github.Askigh:Mask:1.2.2'
 
     //LOGGER
     compile 'org.slf4j:slf4j-api:1.8.0-beta2'
@@ -34,4 +35,11 @@ jar {
 
 shadowJar {
     archiveName = "MaskInterface-v${version}.${extension}"
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
 }

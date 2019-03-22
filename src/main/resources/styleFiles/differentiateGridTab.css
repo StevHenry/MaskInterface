@@ -1,0 +1,5 @@
+@import "gridTabStyle.css";
+
+.text-area {
+    -fx-pref-height: 120px;
+}

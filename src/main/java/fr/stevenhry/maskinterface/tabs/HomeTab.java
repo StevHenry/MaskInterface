@@ -1,11 +1,7 @@
 package fr.stevenhry.maskinterface.tabs;
 
-import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
 import fr.stevenhry.maskinterface.MWindow;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,22 +29,25 @@ public class HomeTab extends GridPane implements MaskFunctionTab {
         text.setId("homeText");
 
         //"Their githubs are: https://github.com/lolilolulolilol and https://github.com/Askigh/"
-       /*Hyperlink stevenGithub = new Hyperlink("Steven HENRY's github");
+        /*Hyperlink stevenGithub = new Hyperlink("Steven HENRY's github");
         stevenGithub.setOnAction(actionEvent -> { MWindow.openBrowser("https://github.com/lolilolulolilol"); });
         Hyperlink antoineGithub = new Hyperlink("Antoine TRAN's github");
-        stevenGithub.setOnAction(actionEvent -> { MWindow.openBrowser("https://github.com/Askigh"); });
+        antoineGithub.setOnAction(actionEvent -> { MWindow.openBrowser("https://github.com/Askigh"); });
         Hyperlink maskGithub = new Hyperlink("Mask repository");
-        stevenGithub.setOnAction(actionEvent -> { MWindow.openBrowser("https://github.com/Askigh/Mask"); });
+        maskGithub.setOnAction(actionEvent -> { MWindow.openBrowser("https://github.com/Askigh/Mask"); });
         Hyperlink maskInterfaceGithub = new Hyperlink("MaskInterface repository");
-        stevenGithub.setOnAction(actionEvent -> { MWindow.openBrowser("https://github.com/lolilolulolilol/MaskInterface"); });*/
+        maskInterfaceGithub.setOnAction(actionEvent -> { MWindow.openBrowser("https://github.com/lolilolulolilol/MaskInterface"); });*/
 
         final String[] introductionText = new String[]{
-                /*"This software has been developed by Steven HENRY (17 years old french developer)",
-                "It is based on the Mask mathematics API created by Antoine Tran (17 years old swiss developer)",*/
-                //"They are both part of Starype development team",
+                /*
+                "This software has been developed by Steven HENRY (17 years old french developer)",
+                "It is based on the Mask mathematics API created by Antoine Tran (17 years old swiss developer)",
+                "They are both part of Starype development team",
+                */
                 "Mask Interface",
-                "Version 1.0",
-                "", "This software is provided by a pair of students"
+                "Version 1.1 - March 2019",
+                "",
+                "This software is provided by a pair of students"
         };
         text.setText(String.join("\n", introductionText));
         text.setWrapText(true);
@@ -56,7 +55,7 @@ public class HomeTab extends GridPane implements MaskFunctionTab {
         text.prefWidth(Region.USE_COMPUTED_SIZE);
         text.textAlignmentProperty().setValue(TextAlignment.CENTER);
 
-        this.addRow( 0, img1);
+        this.addRow(0, img1);
         this.addRow(1, text);
         //this.addRow(2, stevenGithub, antoineGithub, maskGithub, maskInterfaceGithub);
     }

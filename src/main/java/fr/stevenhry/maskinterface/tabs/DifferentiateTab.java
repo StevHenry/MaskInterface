@@ -3,19 +3,20 @@ package fr.stevenhry.maskinterface.tabs;
 import fr.stevenhry.maskinterface.util.TimeCalculator;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import net.akami.mask.utils.ReducerFactory;
+import net.akami.mask.tree.DerivativeTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 
-public class ExpandTab extends GridMaskTab {
+public class DifferentiateTab extends GridMaskTab {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ExpandTab.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(DifferentiateTab.class);
 
-    public ExpandTab(String tabName) {
-        super(tabName, "styleFiles/gridTabStyle.css");
+    public DifferentiateTab(String tabName) {
+        super(tabName, "styleFiles/differentiateGridTab.css");
     }
 
     @Override
@@ -23,7 +24,9 @@ public class ExpandTab extends GridMaskTab {
         //Fields initialization
         Label typeLabel = new Label("Type your expression:");
         Label resultLabel = new Label("Result:");
-        TextField calculation = new TextField();
+        Label variableLabel = new Label("Variable:");
+        TextArea calculation = new TextArea();
+        TextField variable = new TextField();
 
         //Calculation
         actionButton.setOnAction((actionEvent) -> {
@@ -38,41 +41,49 @@ public class ExpandTab extends GridMaskTab {
                 try {
                     if (calculation.getText().matches("[\\s]+|")) {
                         resetResultField();
-                        errorByTab("You must define an expression before trying to develop!",
+                        errorByTab("You must define an expression before trying to differentiate!",
                                 new NullPointerException("Expression is not defined"));
                     } else {
-                        String calculatedReduction = ReducerFactory.reduce(calculation.getText());
-                        Platform.runLater(() -> {
-                            result.setText(calculatedReduction);
-                        });
+                        if (variable.getText().matches("[a-zA-Z]")) {
+                            DerivativeTree tree = new DerivativeTree(calculation.getText(), variable.getText().charAt(0));
+                            String derivedResult = tree.merge();
+                            Platform.runLater(() -> {
+                                result.setText(derivedResult);
+                            });
+                        } else {
+                            resetResultField();
+                            errorByTab("Please enter a valid variable ! (Single character only)",
+                                    new IllegalArgumentException("Bad variable entered"));
+                        }
                     }
                 } catch (Exception exception) {
                     resetResultField();
-                    errorByTab("Unable to reduce expression !", exception);
+                    errorByTab("Unable to differentiate expression !", exception);
                 }
                 timeCalculator.stop();
             });
 
             //Action
-            refurbishThenComplete(calculationThread, "Expanding/Reducing...");
+            refurbishThenComplete(calculationThread, "Differentiating...");
         });
 
         //Configuring tab's layout
         this.addRow(0, typeLabel, calculation, actionButton);
-        this.addRow(1, resultLabel, result, timeLabel);
+        this.addRow(1, variableLabel, variable);
+        this.addRow(2, resultLabel, result, timeLabel);
     }
 
     @Override
     protected void errorByTab(String customMessage, Exception exception) {
-        showErrorLabel(customMessage, exception, 1, 2);
+        showErrorLabel(customMessage, exception, 1, 3);
     }
 
     @Override
     public void refurbish() {
         Platform.runLater(() -> {
             actionButton.setDisable(false);
-            this.getChildren().remove(errorLabel);
             result.setText("...");
+            this.getChildren().remove(errorLabel);
             timeLabel.setText(new SimpleDateFormat("mm:ss:SSS").format(0l));
         });
     }

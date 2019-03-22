@@ -22,22 +22,24 @@ public class EquationSolverTab extends GridMaskTab {
 
     @Override
     public void loadPane() {
-        Label typeLabel = new Label("Type your equations:");
+        //Fields initialization
+        Label typeLabel = new Label("Type your equation(s):");
         Label resultLabel = new Label("Result:");
-
         TextArea expressions = new TextArea();
 
+        //Calculation
         actionButton.setText("Solve");
         actionButton.setOnAction((actionEvent) -> {
-            LOGGER.debug("Entered expressions to solve: \"" + expressions.getText().replace("\n", " | ") + "\"");
+            LOGGER.debug("Entered expression(s) to solve: \"" + expressions.getText().replace("\n", " | ") + "\"");
 
             actionButton.setDisable(true);
             timeCalculator = new TimeCalculator();
 
+            //Calculation Thread initialization
             Thread calculationThread = new Thread(() -> {
                 timeCalculator.start();
                 try {
-                    if (expressions.getText() == null || expressions.getText().replace(" ", "").equals("")) {
+                    if (expressions.getText().matches("[\\s]+|")) {
                         resetResultField();
                         errorByTab("You must define your expression(s) before trying to solve!",
                                 new NullPointerException("Expression(s) not defined"));
@@ -46,7 +48,7 @@ public class EquationSolverTab extends GridMaskTab {
                                 expressions.getText().replace(";", "\n").split("\n")));
                         Platform.runLater(() -> {
                             String calculatedValues = String.join("\n", solvedValues.entrySet().stream()
-                                    .map(entry -> entry.getKey() + "=" + entry.getValue()).collect(Collectors.toList()));
+                                    .map(entry -> entry.getKey() + " = " + entry.getValue()).collect(Collectors.toList()));
                             result.setText(calculatedValues);
                         });
                     }
@@ -57,9 +59,11 @@ public class EquationSolverTab extends GridMaskTab {
                 timeCalculator.stop();
             });
 
+            //Action
             refurbishThenComplete(calculationThread, "Solving...");
         });
 
+        //Configuring tab's layout
         this.addRow(0, typeLabel, expressions, actionButton);
         this.addRow(1, resultLabel, result, timeLabel);
 

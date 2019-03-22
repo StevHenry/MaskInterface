@@ -1,7 +1,5 @@
 package fr.stevenhry.maskinterface;
 
-import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
-import com.sun.javafx.application.HostServicesDelegate;
 import fr.stevenhry.maskinterface.tabs.MaskTab;
 import javafx.application.Application;
 import javafx.application.HostServices;
@@ -13,10 +11,13 @@ import javafx.stage.Stage;
 
 public class MWindow extends Application {
 
+    private static HostServices hostServices;
     //private static final Logger LOGGER = LoggerFactory.getLogger(MWindow.class);
     private BorderPane borderPane;
-    private static HostServices hostServices;
 
+    public static void openBrowser(String url) {
+        hostServices.showDocument(url);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -43,9 +44,5 @@ public class MWindow extends Application {
 
     public void setCenterPane(Pane pane) {
         borderPane.setCenter(pane);
-    }
-
-    public static void openBrowser(String url){
-        hostServices.showDocument(url);
     }
 }
