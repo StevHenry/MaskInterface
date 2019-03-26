@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'fr.stevenhry.maskinterface'
-version '1.1'
+version '1.1.0.2'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -20,7 +20,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     //MASK
-    implementation 'com.github.Askigh:Mask:1.2.2'
+    implementation 'com.github.Askigh:Mask:1.2.3'
 
     //LOGGER
     compile 'org.slf4j:slf4j-api:1.8.0-beta2'

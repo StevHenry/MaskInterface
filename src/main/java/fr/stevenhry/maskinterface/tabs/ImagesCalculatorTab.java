@@ -48,7 +48,7 @@ public class ImagesCalculatorTab extends GridMaskTab {
 
         update.setId("actionButton");
         update.setOnAction(actionEvent -> {
-            if (function.getText().matches("[\\s]+|")) {
+            if (!function.getText().matches("[\\s]+|")) {
                 try { exp.reload(function.getText()); } catch (MaskException e) { }
                 refurbish();
 
@@ -78,10 +78,9 @@ public class ImagesCalculatorTab extends GridMaskTab {
                 Thread calculationThread = new Thread(() -> {
                     timeCalculator.start();
                     try {
-                        float myResult = MaskOperator.begin().imageFor(exp, MaskExpression.TEMP, false, values).asFloat();
+                        String myResult = MaskOperator.begin().imageFor(exp, MaskExpression.TEMP, false, values).asExpression();
                         Platform.runLater(() -> {
-                            this.getChildren().remove(errorLabel);
-                            result.setText(String.valueOf(myResult));
+                            result.setText(myResult);
                         });
                     } catch (Exception exception) {
                         resetResultField();
@@ -187,6 +186,7 @@ public class ImagesCalculatorTab extends GridMaskTab {
      * @param exp Used {@link net.akami.mask.math.MaskExpression}
      */
     private boolean isNotOutnumberingUnknownsCount(MaskExpression exp){
+        LOGGER.debug("Variables count: " + exp.getVariablesAmount());
         if(exp.getVariablesAmount() > fieldsPerLine*unknownFieldsLines){
             showErrorLabel("You can't define a function with more than " +
                             (fieldsPerLine * unknownFieldsLines) + " unknowns in your function!",
