@@ -45,7 +45,7 @@ public class HomeTab extends GridPane implements MaskFunctionTab {
                 "They are both part of Starype development team",
                 */
                 "Mask Interface",
-                "Version 1.1.0.2 - March 2019",
+                "Version 1.2 - March 2019",
                 "",
                 "Software provided by a pair of students"
         };
