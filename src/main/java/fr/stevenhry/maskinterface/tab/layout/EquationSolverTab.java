@@ -1,5 +1,7 @@
-package fr.stevenhry.maskinterface.tabs;
+package fr.stevenhry.maskinterface.tab.layout;
 
+import fr.stevenhry.maskinterface.tab.GridMaskTab;
+import fr.stevenhry.maskinterface.util.JSONMessage;
 import fr.stevenhry.maskinterface.util.TimeCalculator;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
@@ -23,12 +25,11 @@ public class EquationSolverTab extends GridMaskTab {
     @Override
     public void loadPane() {
         //Fields initialization
-        Label typeLabel = new Label("Type your equation(s):");
-        Label resultLabel = new Label("Result:");
+        Label typeLabel = new Label(JSONMessage.getMessage("tabs.equations.equation"));
         TextArea expressions = new TextArea();
 
         //Calculation
-        actionButton.setText("Solve");
+        actionButton.setText(JSONMessage.getMessage("tabs.equations.actionButton"));
         actionButton.setOnAction((actionEvent) -> {
             LOGGER.debug("Entered expression(s) to solve: \"" + expressions.getText().replace("\n", " | ") + "\"");
 
@@ -41,7 +42,7 @@ public class EquationSolverTab extends GridMaskTab {
                 try {
                     if (expressions.getText().matches("[\\s]+|")) {
                         resetResultField();
-                        errorByTab("You must define your expression(s) before trying to solve!",
+                        errorByTab(JSONMessage.getMessage("tabs.equations.error.undefinedExpression"),
                                 new NullPointerException("Expression(s) not defined"));
                     } else {
                         Map<Character, String> solvedValues = EquationSolver.solve(EquationSolver.build(
@@ -54,13 +55,13 @@ public class EquationSolverTab extends GridMaskTab {
                     }
                 } catch (Exception exception) {
                     resetResultField();
-                    errorByTab("Unable to solve expressions !", exception);
+                    errorByTab(JSONMessage.getMessage("tabs.equations.error.calculation"), exception);
                 }
                 timeCalculator.stop();
             });
 
             //Action
-            refurbishThenComplete(calculationThread, "Solving...");
+            refurbishThenComplete(calculationThread, JSONMessage.getMessage("tabs.equations.performing"));
         });
 
         //Configuring tab's layout

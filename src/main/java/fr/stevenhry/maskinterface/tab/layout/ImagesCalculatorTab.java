@@ -1,5 +1,7 @@
-package fr.stevenhry.maskinterface.tabs;
+package fr.stevenhry.maskinterface.tab.layout;
 
+import fr.stevenhry.maskinterface.tab.GridMaskTab;
+import fr.stevenhry.maskinterface.util.JSONMessage;
 import fr.stevenhry.maskinterface.util.TimeCalculator;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
@@ -38,21 +40,23 @@ public class ImagesCalculatorTab extends GridMaskTab {
     @Override
     public void loadPane() {
         //Fields initialization
-        Label typeLabel = new Label("Function:");
-        Label resultLabel = new Label("Result:");
+        Label typeLabel = new Label(JSONMessage.getMessage("tabs.images.function"));
         unknownsNames = new Label[unknownFieldsLines * fieldsPerLine];
         unknownsValues = new TextField[unknownFieldsLines * fieldsPerLine];
         TextField function = new TextField();
         MaskExpression exp = new MaskExpression();
-        Button update = new Button("Update");
+        Button update = new Button(JSONMessage.getMessage("tabs.images.update"));
 
         update.setId("actionButton");
         update.setOnAction(actionEvent -> {
             if (!function.getText().matches("[\\s]+|")) {
-                try { exp.reload(function.getText()); } catch (MaskException e) { }
+                try {
+                    exp.reload(function.getText());
+                } catch (MaskException e) {
+                }
                 refurbish();
 
-                if(isNotOutnumberingUnknownsCount(exp)){
+                if (isNotOutnumberingUnknownsCount(exp)) {
                     activateUnknownEntries(exp.getVariables());
                 }
             }
@@ -65,7 +69,7 @@ public class ImagesCalculatorTab extends GridMaskTab {
             actionButton.setDisable(true);
             timeCalculator = new TimeCalculator();
 
-            if(checkEntries(function, exp, update)){
+            if (checkEntries(function, exp, update)) {
                 String[] values = new String[exp.getVariablesAmount()];
                 long providedUnknowns = Arrays.stream(unknownsValues).filter(vals -> !vals.isDisabled()
                         && !vals.getText().replaceAll("[\\s]+", "").equals("")).count();
@@ -84,13 +88,13 @@ public class ImagesCalculatorTab extends GridMaskTab {
                         });
                     } catch (Exception exception) {
                         resetResultField();
-                        errorByTab("Unable to calculate image!", exception);
+                        errorByTab(JSONMessage.getMessage("tabs.images.error.calculation"), exception);
                     }
                     timeCalculator.stop();
                 });
 
                 //Action
-                complete(calculationThread, "Calculating image...");
+                complete(calculationThread, JSONMessage.getMessage("tabs.images.performing"));
             }
         });
 
@@ -129,21 +133,27 @@ public class ImagesCalculatorTab extends GridMaskTab {
     }
 
     /**
-     * @return whether all required parameters are set and workable or not
-     * @param function text field where function is entered
-     * @param exp found {@link net.akami.mask.math.MaskExpression} entered in the function
+     * @param function     text field where function is entered
+     * @param exp          found {@link net.akami.mask.math.MaskExpression} entered in the function
      * @param updateButton button used to update unknown fields activation
+     * @return whether all required parameters are set and workable or not
      */
-    private boolean checkEntries(TextField function, MaskExpression exp, Button updateButton){
+    private boolean checkEntries(TextField function, MaskExpression exp, Button updateButton) {
         if (function.getText().replaceAll("\\s", "").equals("") || exp == null) {
             refurbish();
-            errorByTab("You must define an expression before trying to calculate an image !",
+            errorByTab(JSONMessage.getMessage("tabs.images.error.undefinedExpression"),
                     new IllegalArgumentException("Function is not defined"));
             return false;
         } else {
-            if(!isNotOutnumberingUnknownsCount(exp)){ return false; }
+            if (!isNotOutnumberingUnknownsCount(exp)) {
+                return false;
+            }
 
-            try { exp.reload(function.getText()); } catch (MaskException e) { return false;}
+            try {
+                exp.reload(function.getText());
+            } catch (MaskException e) {
+                return false;
+            }
 
             long enabledFields = Arrays.stream(unknownsValues).filter(e -> !e.isDisabled()).count();
             long providedUnknowns = Arrays.stream(unknownsValues).filter(vals -> !vals.isDisabled()
@@ -173,8 +183,8 @@ public class ImagesCalculatorTab extends GridMaskTab {
                 }
             } else {
                 resetResultField();
-                errorByTab("You must click update button before trying to calculate!\n"
-                        + "\t\tAutomatically updated !", new IllegalArgumentException());
+                actionButton.setDisable(false);
+                errorByTab(JSONMessage.getMessage("tabs.images.error.notUpdated"), new IllegalArgumentException());
                 updateButton.fire();
             }
         }
@@ -182,16 +192,16 @@ public class ImagesCalculatorTab extends GridMaskTab {
     }
 
     /**
-     * @return whether the MaskExpression unknowns outnumbers the max settable unknowns count or not
      * @param exp Used {@link net.akami.mask.math.MaskExpression}
+     * @return whether the MaskExpression unknowns outnumbers the max settable unknowns count or not
      */
-    private boolean isNotOutnumberingUnknownsCount(MaskExpression exp){
+    private boolean isNotOutnumberingUnknownsCount(MaskExpression exp) {
         LOGGER.debug("Variables count: " + exp.getVariablesAmount());
-        if(exp.getVariablesAmount() > fieldsPerLine*unknownFieldsLines){
-            showErrorLabel("You can't define a function with more than " +
-                            (fieldsPerLine * unknownFieldsLines) + " unknowns in your function!",
-                    new IllegalArgumentException("Too much unknowns"), 1, spaces + 2 + unknownFieldsLines * 2,
-                    fieldsPerLine - 2, 1);
+        if (exp.getVariablesAmount() > fieldsPerLine * unknownFieldsLines) {
+            errorByTab(JSONMessage.getMessage("tabs.images.error.tooMuchUnknowns").replaceFirst("%d",
+                    String.valueOf(fieldsPerLine * unknownFieldsLines)), new IllegalArgumentException("Too much unknowns"));
+            /*showErrorLabel(, 1, spaces + 2 + unknownFieldsLines * 2,
+                    fieldsPerLine - 2, 1);*/
             return false;
         }
         return true;
@@ -202,12 +212,13 @@ public class ImagesCalculatorTab extends GridMaskTab {
      */
     private void pleaseFillEachField() {
         resetResultField();
-        errorByTab("You must fill each unknown value!",
+        errorByTab(JSONMessage.getMessage("tabs.image.error.notFilled"),
                 new NullPointerException("Non-recoverable value(s) field(s)"));
     }
 
     /**
      * Enable necessary unknown fields and titles then disable the other ones.
+     *
      * @param variables calculation variables
      */
     private void activateUnknownEntries(char[] variables) {
@@ -230,7 +241,7 @@ public class ImagesCalculatorTab extends GridMaskTab {
     }
 
     @Override
-    protected void errorByTab(String customMessage, Exception exception){
+    protected void errorByTab(String customMessage, Exception exception) {
         showErrorLabel(customMessage, exception, 1, spaces + 2 + unknownFieldsLines * 2, fieldsPerLine - 2, 1);
     }
 

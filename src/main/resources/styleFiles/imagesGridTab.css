@@ -1,14 +1,9 @@
 @import "gridTabStyle.css";
 
 .tab {
-    -fx-background-image: url("/images/light_gray_abstract_1.jpg");
-    -fx-background-repeat: stretch;
-
     -fx-hgap: 50;
     -fx-vgap: 20;
     -fx-alignment: center;
-
-    -fx-max-width: 1010px;
 }
 
 .text-area {
@@ -24,10 +19,5 @@
 }
 
 #errorLabel {
-    -fx-fill-width: true;
-    -fx-font-size: 13px;
-    -fx-font-family: sans-serif;
-    -fx-background-color: rgba(68, 68, 68, 0.4);
-    -fx-text-fill: #7b0001;
     -fx-max-width: 550px;
 }

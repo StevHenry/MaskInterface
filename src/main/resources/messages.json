@@ -1,0 +1,63 @@
+{
+  "window": {
+    "name": "Mask Interface"
+  },
+  "tabs": {
+    "result": "Result:",
+    "home": {
+      "name": "Home",
+      "StevenGithubName": "Steven HENRY's github",
+      "StevenGithubLink": "https://github.com/lolilolulolilol",
+      "AntoineGithubName": "Antoine TRAN's github",
+      "AntoineGithubLink": "https://github.com/Tran-Antoine",
+      "MaskRepositoryName": "Mask repository",
+      "MaskRepositoryLink": "https://github.com/Tran-Antoine/Mask-algebra",
+      "MaskInterfaceRepositoryName": "MaskInterface repository",
+      "MaskInterfaceRepositoryLink": "https://github.com/lolilolulolilol/MaskInterface",
+      "softwareDescription": "Mask Interface - Version 1.3\n\nImplementation of Antoine Tran's Mask library by Steven HENRY, both of them being part of the Starype development team"
+    },
+    "images": {
+      "name": "Calculate image",
+      "function": "Function:",
+      "performing": "Calculating image...",
+      "update": "Update",
+      "error": {
+        "undefinedExpression": "You must define an expression before trying to calculate an image !",
+        "calculation": "Unable to calculate image!",
+        "notUpdated": "You must click update button before trying to calculate!\n\t\tAutomatically updated !",
+        "tooMuchUnknowns": "You can't define a function with more than %d unknowns in your function !",
+        "notFilled": "You must fill each unknown value !"
+      }
+    },
+    "simplifier": {
+      "name": "Simplify",
+      "function": "Type your expression:",
+      "performing": "Simplifying...",
+      "error": {
+        "undefinedExpression": "You must define an expression before trying to simplify !",
+        "calculation": "Unable to simplify expression !"
+      }
+    },
+    "differentiate": {
+      "name": "Differentiate",
+      "function": "Type your expression:",
+      "performing": "Differentiating...",
+      "variable": "Variable:",
+      "error": {
+        "undefinedExpression": "You must define an expression before trying to differentiate !",
+        "calculation": "Unable to differentiate !",
+        "variable": "Please enter a valid variable ! (Single character only)"
+      }
+    },
+    "equations": {
+      "name": "Solve equations",
+      "equation": "Type your equation(s):",
+      "actionButton": "Solve",
+      "performing": "Solving...",
+      "error": {
+        "undefinedExpression": "You must define your expression(s) before trying to solve !",
+        "calculation": "Unable to solve expressions !"
+      }
+    }
+  }
+}

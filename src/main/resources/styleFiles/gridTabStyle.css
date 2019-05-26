@@ -1,6 +1,8 @@
 .tab {
-    -fx-background-image: url("/images/light_gray_abstract_1.jpg");
+    -fx-background-image: url("/images/MI_background.jpg");
     -fx-background-repeat: stretch;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
 
     -fx-hgap: 50;
     -fx-vgap: 50;
@@ -25,11 +27,11 @@
 }
 
 .label {
-    -fx-font-size: 22px;
+    -fx-font-size: 20;
     -fx-font-weight: bold;
-    -fx-font-family: "Papyrus", "fantasy";
+    -fx-font-family: "Roboto Slab";
     -fx-text-fill: black;
-    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.5), 0, 0, 0, 1);
+    -fx-effect: null;
 }
 
 #errorLabel {
@@ -37,7 +39,7 @@
     -fx-font-size: 13px;
     -fx-font-family: sans-serif;
     -fx-background-color: rgba(68, 68, 68, 0.4);
-    -fx-text-fill: #7b0001;
+    -fx-text-fill: #000000;
     -fx-max-width: 500px;
 }
 
@@ -45,6 +47,7 @@
     -fx-border-radius: 15;
     -fx-border-color: black;
     -fx-border-width: 1px;
+    -fx-effect: null;
 
     -fx-background-radius: 15;
     -fx-background-color: rgba(255, 255, 255, 0.75);

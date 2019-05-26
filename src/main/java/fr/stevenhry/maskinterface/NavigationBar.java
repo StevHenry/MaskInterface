@@ -1,6 +1,6 @@
 package fr.stevenhry.maskinterface;
 
-import fr.stevenhry.maskinterface.tabs.MaskTab;
+import fr.stevenhry.maskinterface.tab.MaskTab;
 import javafx.scene.control.Button;
 import javafx.scene.layout.TilePane;
 
@@ -10,12 +10,14 @@ public class NavigationBar extends TilePane {
         this.getStyleClass().addAll("pane", "flow-tile");
 
         MaskTab.getFunctionTabs().forEach(tab -> {
-            Button button = new Button(tab.getTabName());
-            button.setOnAction(actionEvent -> {
+            Button paneSelectButton = new Button(tab.getTabName());
+
+            paneSelectButton.setOnAction(actionEvent -> {
                 MaskTab.setCurrentTab(tab);
                 window.setCenterPane(tab.getTabManager());
             });
-            getChildren().add(button);
+
+            getChildren().add(paneSelectButton);
         });
 
         this.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource("styleFiles/navBar.css").toExternalForm());

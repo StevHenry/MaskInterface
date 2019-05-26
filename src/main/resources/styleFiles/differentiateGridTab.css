@@ -2,4 +2,5 @@
 
 .text-area {
     -fx-pref-height: 120px;
+    -fx-effect: null;
 }

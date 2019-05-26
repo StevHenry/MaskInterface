@@ -20,7 +20,7 @@
     </Appenders>
 
     <Loggers>
-        <Root level="OFF">
+        <Root level="DEBUG">
             <AppenderRef ref="STDOUT" />
             <AppenderRef ref="STDERR" />
         </Root>

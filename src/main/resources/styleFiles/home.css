@@ -1,18 +1,21 @@
-.tab {
-    -fx-background-image: url("/images/light_gray_abstract_1.jpg");
-    -fx-background-repeat: stretch;
-    -fx-background-position: center center;
+@import "gridTabStyle.css";
 
+.tab {
     -fx-hgap: 50;
     -fx-vgap: 50;
     -fx-alignment: center;
-
-    -fx-max-width: 1010px;;
-
 }
 
+.link {
+    -fx-font-size: 15;
+    -fx-text-fill: rgb(0, 0, 0);
+    -fx-font-weight: bold;
+    -fx-font-family: "Roboto Slab";
+}
+
+
 #homeText {
-    -fx-font-size: 25;
+    -fx-font-size: 20;
     -fx-fill: black;
     -fx-font-weight: bold;
     -fx-font-family: "Roboto Slab";
@@ -26,5 +29,6 @@
     -fx-stroke: black;
     -fx-stroke-width: 1;
 
-    -fx-pref-width: 400px;
+    -fx-pref-width: 550px;
+    -fx-effect: null;
 }

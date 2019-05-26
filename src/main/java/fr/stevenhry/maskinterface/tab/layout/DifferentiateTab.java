@@ -1,10 +1,13 @@
-package fr.stevenhry.maskinterface.tabs;
+package fr.stevenhry.maskinterface.tab.layout;
 
+import fr.stevenhry.maskinterface.tab.GridMaskTab;
+import fr.stevenhry.maskinterface.util.JSONMessage;
 import fr.stevenhry.maskinterface.util.TimeCalculator;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import net.akami.mask.exception.MaskException;
 import net.akami.mask.tree.DerivativeTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +25,8 @@ public class DifferentiateTab extends GridMaskTab {
     @Override
     public void loadPane() {
         //Fields initialization
-        Label typeLabel = new Label("Type your expression:");
-        Label resultLabel = new Label("Result:");
-        Label variableLabel = new Label("Variable:");
+        Label typeLabel = new Label(JSONMessage.getMessage("tabs.differentiate.function"));
+        Label variableLabel = new Label(JSONMessage.getMessage("tabs.differentiate.variable"));
         TextArea calculation = new TextArea();
         TextField variable = new TextField();
 
@@ -41,7 +43,7 @@ public class DifferentiateTab extends GridMaskTab {
                 try {
                     if (calculation.getText().matches("[\\s]+|")) {
                         resetResultField();
-                        errorByTab("You must define an expression before trying to differentiate!",
+                        errorByTab(JSONMessage.getMessage("tabs.differentiate.error.undefinedExpression"),
                                 new NullPointerException("Expression is not defined"));
                     } else {
                         if (variable.getText().matches("[a-zA-Z]")) {
@@ -52,19 +54,19 @@ public class DifferentiateTab extends GridMaskTab {
                             });
                         } else {
                             resetResultField();
-                            errorByTab("Please enter a valid variable ! (Single character only)",
+                            errorByTab(JSONMessage.getMessage("tabs.differentiate.error.variable"),
                                     new IllegalArgumentException("Bad variable entered"));
                         }
                     }
-                } catch (Exception exception) {
+                } catch (MaskException exception) {
                     resetResultField();
-                    errorByTab("Unable to differentiate expression !", exception);
+                    errorByTab(JSONMessage.getMessage("tabs.differentiate.error.calculation"), exception);
                 }
                 timeCalculator.stop();
             });
 
             //Action
-            refurbishThenComplete(calculationThread, "Differentiating...");
+            refurbishThenComplete(calculationThread, JSONMessage.getMessage("tabs.differentiate.performing"));
         });
 
         //Configuring tab's layout

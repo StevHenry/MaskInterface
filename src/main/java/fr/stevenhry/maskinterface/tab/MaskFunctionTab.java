@@ -1,4 +1,4 @@
-package fr.stevenhry.maskinterface.tabs;
+package fr.stevenhry.maskinterface.tab;
 
 public interface MaskFunctionTab {
 

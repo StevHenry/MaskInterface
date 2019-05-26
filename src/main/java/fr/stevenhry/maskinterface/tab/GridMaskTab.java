@@ -1,5 +1,6 @@
-package fr.stevenhry.maskinterface.tabs;
+package fr.stevenhry.maskinterface.tab;
 
+import fr.stevenhry.maskinterface.util.JSONMessage;
 import fr.stevenhry.maskinterface.util.TimeCalculator;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
@@ -22,6 +23,8 @@ public abstract class GridMaskTab extends GridPane implements MaskFunctionTab {
     protected Text timeLabel = new Text(new SimpleDateFormat("mm:ss:SSS").format(0l));
     //Area where result is shown:
     protected TextArea result = new TextArea("...");
+    //Label to show where result is displayed
+    protected Label resultLabel = new Label(JSONMessage.getMessage("tabs.result"));
     //Button to launch the calculation:
     protected Button actionButton = new Button();
     //TimeCalculator used to calculation calculation:

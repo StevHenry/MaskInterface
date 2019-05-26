@@ -7,6 +7,7 @@
     -fx-text-fill: WHITE;
     -fx-font-weight: bold;
     -fx-font-family: "Roboto Slab";
+    -fx-effect: null;
 
     -fx-pref-height: 20px;
     -fx-pref-width: 202px;
