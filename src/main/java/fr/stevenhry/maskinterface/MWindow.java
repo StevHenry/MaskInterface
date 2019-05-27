@@ -4,7 +4,9 @@ import fr.stevenhry.maskinterface.tab.MaskTab;
 import fr.stevenhry.maskinterface.util.JSONMessage;
 import javafx.application.Application;
 import javafx.application.HostServices;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -25,16 +27,19 @@ public class MWindow extends Application {
 
         primaryStage.setTitle(JSONMessage.getMessage("window.name"));
         primaryStage.setMaximized(false);
-        primaryStage.setResizable(false);
+        //primaryStage.setResizable(false);
+        primaryStage.sizeToScene();
 
         primaryStage.getIcons().add(new Image(MWindow.class.getResourceAsStream("/images/MI_icon.png")));
 
         NavigationBar navigationBar = new NavigationBar(this);
+        navigationBar.setMaxWidth(Double.MAX_VALUE);
+
         borderPane = new BorderPane();
         borderPane.setTop(navigationBar);
         setCenterPane(MaskTab.getCurrentTab().getTabManager());
 
-        Scene scene = new Scene(borderPane, MaskInterface.WINDOW_WIDTH, MaskInterface.WINDOW_HEIGHT);
+        Scene scene = new Scene(borderPane);
         scene.setRoot(borderPane);
 
         primaryStage.setScene(scene);

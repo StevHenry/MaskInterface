@@ -7,8 +7,6 @@
     -fx-hgap: 50;
     -fx-vgap: 50;
     -fx-alignment: center;
-
-    -fx-max-width: 1010px;
 }
 
 .tabName {
@@ -23,13 +21,13 @@
 }
 
 .timeLabel {
-    -fx-font: 15pt "Tahoma";
+    -fx-font: 15pt "Roboto Regular";
 }
 
 .label {
     -fx-font-size: 20;
     -fx-font-weight: bold;
-    -fx-font-family: "Roboto Slab";
+    -fx-font-family: "Roboto Regular";
     -fx-text-fill: black;
     -fx-effect: null;
 }
@@ -47,15 +45,16 @@
     -fx-border-radius: 15;
     -fx-border-color: black;
     -fx-border-width: 1px;
+    -fx-padding: 0 10 0 10;
     -fx-effect: null;
 
     -fx-background-radius: 15;
-    -fx-background-color: rgba(255, 255, 255, 0.75);
-    -fx-padding: 0 10 0 10;
+    -fx-background-color: rgb(255, 255, 255);
+    -fx-background-insets: 0 0;
     -fx-alignment: CENTER;
 
     -fx-font-size: 17;
     -fx-text-fill: black;
     -fx-font-weight: bold;
-    -fx-font-family: "Roboto Slab";
+    -fx-font-family: "Roboto Regular";
 }

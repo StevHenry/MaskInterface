@@ -7,14 +7,13 @@
 }
 
 .text-area {
-    -fx-pref-width: 200px;
     -fx-pref-height: 15px;
 }
 
 #unknownName {
     -fx-font-size: 20px;
     -fx-font-family: "Roboto Slab";
-    -fx-text-fill: #254e86;
+    -fx-text-fill: #d5d5d5;
     -fx-alignment: center;
 }
 

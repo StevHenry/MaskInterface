@@ -7,6 +7,9 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import net.akami.mask.core.Mask;
+import net.akami.mask.core.MaskDerivativeCalculator;
+import net.akami.mask.core.MaskOperatorHandler;
 import net.akami.mask.exception.MaskException;
 import net.akami.mask.tree.DerivativeTree;
 import org.slf4j.Logger;
@@ -47,10 +50,12 @@ public class DifferentiateTab extends GridMaskTab {
                                 new NullPointerException("Expression is not defined"));
                     } else {
                         if (variable.getText().matches("[a-zA-Z]")) {
-                            DerivativeTree tree = new DerivativeTree(calculation.getText(), variable.getText().charAt(0));
-                            String derivedResult = tree.merge();
+                            Mask mask = new Mask(calculation.getText());
+                            MaskOperatorHandler handler = new MaskOperatorHandler();
+                            handler.begin(mask);
+                            handler.compute(MaskDerivativeCalculator.class, mask, variable.getText().charAt(0));
                             Platform.runLater(() -> {
-                                result.setText(derivedResult);
+                                result.setText(mask.getExpression());
                             });
                         } else {
                             resetResultField();

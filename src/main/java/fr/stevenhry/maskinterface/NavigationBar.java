@@ -2,14 +2,16 @@ package fr.stevenhry.maskinterface;
 
 import fr.stevenhry.maskinterface.tab.MaskTab;
 import javafx.scene.control.Button;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.GridPane;
 
-public class NavigationBar extends TilePane {
+public class NavigationBar extends GridPane {
 
     public NavigationBar(MWindow window) {
-        this.getStyleClass().addAll("pane", "flow-tile");
+        this.getStyleClass().add("pane");
+        this.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource("styleFiles/navBar.css").toExternalForm());
 
-        MaskTab.getFunctionTabs().forEach(tab -> {
+        for(int current = 0; current < MaskTab.getFunctionTabs().size(); current++){
+            MaskTab tab = MaskTab.getFunctionTabs().get(current);
             Button paneSelectButton = new Button(tab.getTabName());
 
             paneSelectButton.setOnAction(actionEvent -> {
@@ -17,9 +19,7 @@ public class NavigationBar extends TilePane {
                 window.setCenterPane(tab.getTabManager());
             });
 
-            getChildren().add(paneSelectButton);
-        });
-
-        this.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource("styleFiles/navBar.css").toExternalForm());
+            this.add(paneSelectButton, current, 0);
+        }
     }
 }

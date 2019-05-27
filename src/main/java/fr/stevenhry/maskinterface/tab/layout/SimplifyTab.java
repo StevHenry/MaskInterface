@@ -6,6 +6,10 @@ import fr.stevenhry.maskinterface.util.TimeCalculator;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import net.akami.mask.core.Mask;
+import net.akami.mask.core.MaskDerivativeCalculator;
+import net.akami.mask.core.MaskOperatorHandler;
+import net.akami.mask.core.MaskReducer;
 import net.akami.mask.utils.ReducerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,10 +45,12 @@ public class SimplifyTab extends GridMaskTab {
                         resetResultField();
                         errorByTab(JSONMessage.getMessage("tabs.simplifier.error.undefinedExpression"),
                                 new NullPointerException("Expression is not defined"));
-                    } else {
-                        String calculatedReduction = ReducerFactory.reduce(calculation.getText());
+                    } else {                            Mask mask = new Mask(calculation.getText());
+                        MaskOperatorHandler handler = new MaskOperatorHandler();
+                        handler.begin(mask);
+                        handler.compute(MaskReducer.class, mask, null);
                         Platform.runLater(() -> {
-                            result.setText(calculatedReduction);
+                            result.setText(mask.getExpression());
                         });
                     }
                 } catch (Exception exception) {

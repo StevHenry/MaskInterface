@@ -34,14 +34,11 @@ public class HomeTab extends GridPane implements MaskFunctionTab {
         GridPane.setHalignment(text, HPos.CENTER);
         text.setId("homeText");
 
-        Hyperlink stevenGithub = createHyperlink(JSONMessage.getMessage("tabs.home.StevenGithubName"),
-                JSONMessage.getMessage("tabs.home.StevenGithubLink"));
-        Hyperlink antoineGithub = createHyperlink(JSONMessage.getMessage("tabs.home.AntoineGithubName"),
-                JSONMessage.getMessage("tabs.home.AntoineGithubLink"));
-        Hyperlink maskRepository = createHyperlink(JSONMessage.getMessage("tabs.home.MaskRepositoryName"),
-                JSONMessage.getMessage("tabs.home.MaskRepositoryLink"));
-        Hyperlink maskInterfaceRepository = createHyperlink(JSONMessage.getMessage("tabs.home.MaskInterfaceRepositoryName"),
-                JSONMessage.getMessage("tabs.home.MaskInterfaceRepositoryLink"));
+        Hyperlink stevenGithub = createHyperlink("tabs.home.StevenGithubName", "tabs.home.StevenGithubLink");
+        Hyperlink antoineGithub = createHyperlink("tabs.home.AntoineGithubName","tabs.home.AntoineGithubLink");
+        Hyperlink maskRepository = createHyperlink("tabs.home.MaskRepositoryName","tabs.home.MaskRepositoryLink");
+        Hyperlink maskInterfaceRepository = createHyperlink("tabs.home.MaskInterfaceRepositoryName",
+                "tabs.home.MaskInterfaceRepositoryLink");
 
         text.setText(JSONMessage.getMessage("tabs.home.softwareDescription"));
         text.setWrapText(true);
@@ -54,10 +51,9 @@ public class HomeTab extends GridPane implements MaskFunctionTab {
         this.addRow(3, stevenGithub, antoineGithub, maskRepository, maskInterfaceRepository);
     }
 
-    private Hyperlink createHyperlink(String text, String URL){
-        Hyperlink hyperlink = new Hyperlink(text);
-        hyperlink.getStyleClass().add("link");
-        hyperlink.setOnAction(actionEvent -> { MWindow.openURL(URL); });
+    private Hyperlink createHyperlink(String textPath, String urlPath){
+        Hyperlink hyperlink = new Hyperlink(JSONMessage.getMessage(textPath));
+        hyperlink.setOnAction(actionEvent -> { MWindow.openURL(JSONMessage.getMessage(urlPath)); });
         return hyperlink;
     }
 

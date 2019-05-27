@@ -3,6 +3,7 @@ package fr.stevenhry.maskinterface.tab;
 import fr.stevenhry.maskinterface.util.JSONMessage;
 import fr.stevenhry.maskinterface.util.TimeCalculator;
 import javafx.application.Platform;
+import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -37,6 +38,8 @@ public abstract class GridMaskTab extends GridPane implements MaskFunctionTab {
         actionButton.setId("actionButton");
         actionButton.setText(tabName);
         timeLabel.getStyleClass().add("timeLabel");
+        GridMaskTab.setHalignment(actionButton, HPos.CENTER);
+        GridMaskTab.setHalignment(timeLabel, HPos.CENTER);
 
         errorLabel.setId("errorLabel");
         errorLabel.setWrapText(true);

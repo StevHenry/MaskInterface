@@ -6,11 +6,23 @@
     -fx-alignment: center;
 }
 
-.link {
+.hyperlink {
     -fx-font-size: 15;
     -fx-text-fill: rgb(0, 0, 0);
     -fx-font-weight: bold;
+    -fx-underline: true;
     -fx-font-family: "Roboto Slab";
+}
+
+.hyperlink:hover {
+    -fx-underline: true;
+    -fx-text-fill: rgb(80, 80, 80);
+}
+
+.hyperlink:focused {
+    -fx-border-style: none;
+    -fx-border-width: 0;
+    -fx-border-insets: 0;
 }
 
 
